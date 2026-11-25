@@ -1,10 +1,12 @@
-# AADI Gemini Live
+# Gemini API Audio Decisions
 
-Live decisions on Arabic audio, in a single HTML page.
+Live decisions on any audio, in a single HTML page, powered by the Gemini API.
 
 Define your questions (multiple choice, yes/no or score), then play a video, an audio file or your microphone. Every couple of seconds the page sends the latest few seconds of audio to Google's [Gemini Decisions API](https://aistudio.google.com/docs/decisions-api) (`gemini-decision-1`). The answers appear on live cards with a probability for every option.
 
-There is **no server, no install and no build step**: the page calls Google's API directly from the browser.
+It works with speech in any language the model understands, and with non-speech audio such as music or background noise. Questions and options can be written in any language too.
+
+There is **no server, no install and no build step**: the page calls the Gemini API directly from the browser.
 
 ## Quick start
 
@@ -44,18 +46,20 @@ Up to 8 questions. Each one is one of:
 
 | Type | You write | You get back |
 |---|---|---|
-| **Multiple choice** | 2–8 options, one per line. Add a hint for the model after `::`, e.g. `تطبيل :: مدح مبالغ فيه للحكومة` | The top option and a probability for every option |
+| **Multiple choice** | 2–8 options, one per line. Add a hint for the model after `::`, e.g. `Complaint :: the caller is unhappy with the service` | The top option and a probability for every option |
 | **Yes / No** | Just the question | Probability of yes |
 | **Score** | 2–8 ordered levels, lowest first | The most likely level and a probability per level |
 
 Tips (from Google's guidance):
 - Ask positive questions ("Is the caller satisfied?"), not negated ones.
-- A choice question always spreads 100% over its options, even when none fits. Add a catch-all option with a hint (e.g. `أخرى :: لا شيء مما سبق`), or watch the confidence.
-- Probabilities are calibrated, so a 0.66 really means "unsure". Pick your thresholds on your own recordings.
+- A choice question always spreads 100% over its options, even when none fits. Add a catch-all option with a hint (e.g. `Other :: none of the above`), or watch the confidence.
+- Probabilities are calibrated, so 0.66 really means "unsure". Pick your thresholds on your own recordings.
 
 Questions are saved in the browser. **Export JSON** / **Import JSON** moves them between machines.
 
-Built-in examples: talk-show commentary, customer service call, meeting and scheduling, sports commentary, news topic.
+Built-in examples:
+- **Any audio (English):** language spoken, topic, music, speaker tone. Works on any recording.
+- **Arabic examples:** talk-show commentary, customer service call, meeting and scheduling, sports commentary, news topic. These show writing questions and options in another language.
 
 ## Your API key
 
@@ -83,7 +87,7 @@ The **microphone** needs a secure context: a file opened from disk, `localhost`,
 
 ## Measured
 
-12 native Egyptian-speaker recordings from [FLEURS](https://huggingface.co/datasets/google/fleurs) `ar_eg` (CC-BY 4.0): topic out of 8 shuffled options, plus 6 detail questions. Compared with the local [AADI](https://github.com/Hazem-azim/AADI-Arabic-Audio-Decisions) setup running `gemma4:e4b` on Ollama:
+A sanity check on 12 recordings from [FLEURS](https://huggingface.co/datasets/google/fleurs) `ar_eg` (Egyptian Arabic, CC-BY 4.0): the topic out of 8 shuffled options, plus 6 detail questions. For comparison, the same questions with `gemma4:e4b` running locally on Ollama:
 
 | | `gemini-decision-1` | `gemma4:e4b` (local) |
 |---|---|---|
@@ -93,7 +97,7 @@ The **microphone** needs a secure context: a file opened from disk, `localhost`,
 | Silence: "is anyone speaking?" | No (73%) | Yes (65%) |
 | Time per update | ~1.1 s for all questions | ~0.8 s for the first question, ~0.15 s for each extra one |
 
-A small sanity check, not a benchmark. FLEURS speakers read Wikipedia sentences aloud, so a dialect question tends to answer فصحى (MSA).
+This is a small test in one language, not a benchmark.
 
 ## Troubleshooting
 
@@ -107,4 +111,6 @@ A small sanity check, not a benchmark. FLEURS speakers read Wikipedia sentences 
 
 ## Credits
 
-The page is adapted from the live test page I contributed to [AADI – Arabic Audio Decisions](https://github.com/Hazem-azim/AADI-Arabic-Audio-Decisions). Here it calls Google's Decisions API instead of a local AADI server.
+The interface is inspired by the live demo of [AADI – Arabic Audio Decisions](https://github.com/Hazem-azim/AADI-Arabic-Audio-Decisions) by Hazem Abdelazim, which uses the same idea of scoring audio against predefined decisions. This page builds on the live test page I contributed to that project. It adds presets, custom question types, file and microphone sources, any-language use, and calibrated probabilities from Google's Gemini Decisions API.
+
+This repository is independent and not affiliated with AADI or Google.

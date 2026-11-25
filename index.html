@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AADI Gemini Live</title>
+<title>Gemini Audio Decisions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -148,7 +148,7 @@ header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14p
   <header>
     <div class="logo">
       <div class="mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></svg></div>
-      <div><h1>AADI</h1><small>Arabic Audio Decision Intelligence</small></div>
+      <div><h1>Audio Decisions</h1><small>Live decisions on any audio · Gemini API</small></div>
     </div>
     <div class="badges">
       <label class="modelpick" title="Your Gemini API key. Kept only in this browser (localStorage).">API key
@@ -161,7 +161,7 @@ header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14p
 
   <div class="hero">
     <div>
-      <h2>Listen to Arabic audio. <span>See decisions live.</span></h2>
+      <h2>Listen to any audio. <span>See decisions live.</span></h2>
       <p>Define the decisions first, then play a video, an audio file or your microphone. Every 1–3 seconds the last few seconds of audio are scored against each question.</p>
     </div>
     <div class="steps">
@@ -241,31 +241,37 @@ const fmt = t => { t = Math.max(0, t|0); return String(t/60|0).padStart(2,"0")+"
 
 /* ------------------------------------------------------------------ presets */
 const PRESETS = [
-  { name:"Talk show commentary", desc:"Topic, tone and language of a TV commentator", questions:[
+  { name:"Any audio (English)", desc:"Language, content, music and mood · works on any recording", questions:[
+    {type:"choice", text:"Which language is spoken?", options:["English","Arabic","French","Spanish","German","Other :: any other language, or no speech"]},
+    {type:"choice", text:"What is the audio mainly about?", options:["News or politics","Sports","Business or finance","Technology or science","Entertainment or music","Everyday conversation"]},
+    {type:"noul",   text:"Is music playing?"},
+    {type:"score",  text:"How positive is the speaker's tone?", options:["Very negative","Negative","Neutral","Positive","Very positive"]},
+  ]},
+  { name:"Talk show commentary (Arabic)", desc:"Topic, tone and language of a TV commentator", questions:[
     {type:"choice", text:"بيتكلم عن إيه؟", options:["سياسة داخلية","اقتصاد وأسعار","أمن وشرطة","علاقات خارجية","رياضة","قضايا اجتماعية"]},
     {type:"noul",   text:"هل المتحدث بيزعق ومنفعل؟"},
     {type:"choice", text:"موقف المتحدث من الموضوع؟", options:["بيمدح ويؤيد","بينتقد ويهاجم","محايد وبيعرض معلومات"]},
     {type:"score",  text:"مستوى الانفعال في الكلام", options:["هادئ","متحمس","غاضب جداً"]},
     {type:"noul",   text:"هل فيه شتيمة أو ألفاظ خارجة؟"},
   ]},
-  { name:"Customer service call", desc:"Call reason, mood and escalation", questions:[
+  { name:"Customer service call (Arabic)", desc:"Call reason, mood and escalation", questions:[
     {type:"choice", text:"ما سبب اتصال العميل؟", options:["مشكلة في الفاتورة","عطل فني","إلغاء الاشتراك","استفسار عن خدمة","شكوى من موظف"]},
     {type:"score",  text:"مدى غضب العميل", options:["هادئ وراضٍ","منزعج قليلاً","غاضب","غاضب جداً ويهدد"]},
     {type:"noul",   text:"هل يجب تحويل المكالمة لمشرف؟"},
     {type:"noul",   text:"هل تم حل مشكلة العميل في المكالمة؟"},
   ]},
-  { name:"Meeting & scheduling", desc:"Did they agree, and when?", questions:[
+  { name:"Meeting & scheduling (Arabic)", desc:"Did they agree, and when?", questions:[
     {type:"noul",   text:"هل اتفق المتحدثون على موعد للقاء؟"},
     {type:"choice", text:"في أي يوم سيلتقون؟", options:["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","لم يتفقوا"]},
     {type:"choice", text:"في أي فترة من اليوم؟", options:["الصباح","الظهر","العصر","المساء","لم يُحدد"]},
     {type:"score",  text:"مدى وضوح الموعد", options:["لم يُذكر موعد","ذُكر اليوم أو الساعة فقط","ذُكر اليوم والساعة بوضوح"]},
   ]},
-  { name:"Sports commentary", desc:"What is happening in the match", questions:[
+  { name:"Sports commentary (Arabic)", desc:"What is happening in the match", questions:[
     {type:"choice", text:"ما الذي يحدث في المباراة الآن؟", options:["هجمة خطيرة","هدف","ضربة جزاء","خطأ أو بطاقة","تبديل لاعبين","تحليل هادئ"]},
     {type:"noul",   text:"هل أعلن المعلق عن هدف؟"},
     {type:"score",  text:"حماس المعلق", options:["هادئ","متحمس","منفعل جداً"]},
   ]},
-  { name:"News topic", desc:"Classify what a news segment is about", questions:[
+  { name:"News topic (Arabic)", desc:"Classify what a news segment is about", questions:[
     {type:"choice", text:"ما موضوع الكلام في المقطع؟", options:["الطقس","المواصلات والسفر","التعليم","الطبيعة والحيوانات","الرياضة","الانتخابات والسياسة","الصحة","العلوم والفضاء"]},
     {type:"choice", text:"ما لهجة المتحدث؟", options:["مصرية","خليجية","شامية","مغاربية","فصحى"]},
     {type:"noul",   text:"هل يُذكر رقم أو تاريخ في المقطع؟"},
@@ -277,7 +283,7 @@ const PRESETS = [
 // question = {type:"choice"|"noul"|"score", text, options:[string]}; for choice an option may be "label :: hint"
 let questions = [];
 let presetIdx = 0;
-const LS_KEY = "aadi-live-questions-v1";
+const LS_KEY = "gad-questions-v1";
 
 function load() {
   try { const s = JSON.parse(localStorage.getItem(LS_KEY) || "null"); if (s && Array.isArray(s.questions)) { questions = s.questions; presetIdx = s.preset ?? -1; return; } } catch {}
@@ -334,7 +340,7 @@ function optionView(q) {
 
 /* ------------------------------------------------------------------ setup UI */
 const TYPE_INFO = {
-  choice:{name:"Multiple choice", hint:"One option per line (2–8). Optional hint for the model after “::”, e.g. «تطبيل :: مدح مبالغ فيه للحكومة»."},
+  choice:{name:"Multiple choice", hint:"One option per line (2–8). Optional hint for the model after “::”, e.g. «Complaint :: the caller is unhappy with the service»."},
   noul:  {name:"Yes / No", hint:""},
   score: {name:"Score (ordered)", hint:"Levels from lowest to highest, one per line (2–8)."},
 };
@@ -391,7 +397,7 @@ $("qlist").addEventListener("change", e => {
   if (q.type !== "noul" && (!q.options || q.options.length < 2)) q.options = ["",""];
   presetIdx = -1; save(); renderSetup();
 });
-$("exportBtn").onclick = () => download("aadi-questions.json", JSON.stringify({questions}, null, 2));
+$("exportBtn").onclick = () => download("audio-decisions-questions.json", JSON.stringify({questions}, null, 2));
 $("importBtn").onclick = () => $("importFile").click();
 $("importFile").onchange = async e => {
   try {
@@ -414,10 +420,10 @@ $("tabSetup").onclick = $("backSetup").onclick = () => { stopAll(); showStep(fal
 $("tabLive").onclick = $("toLive").onclick = () => { if (!$("toLive").disabled) showStep(true); else toast("Fix the decision questions first."); };
 
 /* ------------------------------------------------------------------ Gemini Decisions API */
-// Pure browser version: calls Google's Decisions API directly, no AADI server.
+// Pure browser page: calls Google's Decisions API directly, no server.
 const GEMINI_MODEL = "gemini-decision-1";
 const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/decisions";
-const KEY_STORE = "aadi-gemini-key";
+const KEY_STORE = "gad-gemini-key";
 function apiKey() { return $("apiKey").value.trim(); }
 try { $("apiKey").value = localStorage.getItem(KEY_STORE) || ""; } catch {}
 $("apiKey").onchange = () => {
@@ -435,7 +441,7 @@ async function geminiCall(input, questions) {
   return d;
 }
 
-// AADI question (payloadQuestions) -> Decisions API question
+// page question (payloadQuestions) -> Decisions API question
 function toGemini(q) {
   const g = {type: q.type, instructions: q.instructions};
   if (q.type === "choice") {
@@ -446,7 +452,7 @@ function toGemini(q) {
 }
 
 // Decisions API answer -> the answer shape the cards expect
-function toAadi(q, a) {
+function toCard(q, a) {
   const out = {type: q.type, confidence: a.confidence};
   if (q.type === "noul") {
     out.noul = a.noul >= 0.5; out.probabilities = {Yes: a.noul, No: 1 - a.noul};
@@ -466,7 +472,7 @@ async function geminiDecide(b64, qs) {
   for (const [id, q] of Object.entries(qs)) questions[id] = toGemini(q);
   const d = await geminiCall([{type:"audio", data: b64, mime_type:"audio/wav"}], questions);
   const answers = {};
-  for (const [id, a] of Object.entries(d.answers)) answers[id] = toAadi(qs[id], a);
+  for (const [id, a] of Object.entries(d.answers)) answers[id] = toCard(qs[id], a);
   return {answers, usage: d.usage};
 }
 
@@ -805,7 +811,7 @@ function download(name, text) {
 $("dlResults").onclick = () => {
   const out = {source: srcName, update_every_sec: hop(), window_sec: win(), questions: sessionQs,
     updates: segs.filter(s => s.status === "done").map(s => ({start: +s.start.toFixed(2), end: +s.end.toFixed(2), latency_ms: Math.round(s.ms), lag_sec: +s.lag.toFixed(2), answers: s.answers}))};
-  download("aadi-results.json", JSON.stringify(out, null, 2));
+  download("audio-decisions-results.json", JSON.stringify(out, null, 2));
 };
 let toastT;
 function toast(msg) {

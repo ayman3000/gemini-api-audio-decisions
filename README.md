@@ -8,10 +8,12 @@ It works with speech in any language the model understands, and with non-speech 
 
 There is **no server, no install and no build step**: the page calls the Gemini API directly from the browser.
 
+**▶ Try it live: <https://ayman3000.github.io/gemini-api-audio-decisions/>** (bring your own Gemini API key; it stays in your browser).
+
 ## Quick start
 
 1. **Get a Gemini API key** at <https://aistudio.google.com/apikey>. The free tier is enough for testing.
-2. **Open `index.html`** by double-clicking it, or serve the folder with any static web server (see [Hosting](#hosting)).
+2. **Open the [live page](https://ayman3000.github.io/gemini-api-audio-decisions/)**, or download `index.html` and double-click it, or serve the folder with any static web server (see [Hosting](#hosting)).
 3. **Paste the key** in the **API key** field in the header. The badge turns green ("Ready · Gemini") once a tiny test request succeeds.
 4. **Step 1, Decisions:** start from an example or write your own questions.
 5. **Step 2, Live test:** load a video or audio file, or click **Microphone**, then press play.

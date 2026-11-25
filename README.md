@@ -114,3 +114,7 @@ This is a small test in one language, not a benchmark.
 The interface is inspired by the live demo of [AADI – Arabic Audio Decisions](https://github.com/Hazem-azim/AADI-Arabic-Audio-Decisions) by Hazem Abdelazim, which uses the same idea of scoring audio against predefined decisions. This page builds on the live test page I contributed to that project. It adds presets, custom question types, file and microphone sources, any-language use, and calibrated probabilities from Google's Gemini Decisions API.
 
 This repository is independent and not affiliated with AADI or Google.
+
+## License
+
+[MIT](LICENSE) © 2026 Ayman H. Moustafa
